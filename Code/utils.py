@@ -647,8 +647,8 @@ def save_checkpoint(epoch, model, optimizer):
     state = {'epoch': epoch,
              'model': model,
              'optimizer': optimizer}
-    filename = str(epoch)+'_checkpoint_ssd300.pth.tar'
-    torch.save(state,'/content/drive/MyDrive/KAIST_Double/GFU_v1/tar/'+filename)
+    filename = 'epoch_' + str(epoch)+'_checkpoint.pth.tar'
+    torch.save(state,filename)
 
 
 class AverageMeter(object):

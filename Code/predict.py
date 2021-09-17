@@ -1,4 +1,5 @@
 import json
+import tqdm
 from collections import OrderedDict
 from torchvision import transforms
 from utils import *
@@ -7,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load model checkpoint
-checkpoint = '/content/drive/MyDrive/KAIST_Double/GFU_v1/tar/55_checkpoint_ssd300.pth.tar'
+checkpoint = './epoch_0_checkpoint.pth.tar'
 checkpoint = torch.load(checkpoint)
 start_epoch = checkpoint['epoch'] + 1
 print('\nLoaded checkpoint from epoch %d.\n' % start_epoch)
@@ -59,31 +60,25 @@ def detect(prediction_json, index, rgb_image, thermal_image, min_score, max_over
 
 if __name__ == '__main__':
 
-    rgb_images=[]
-    thermal_images=[]
-    pd_json=[]
+  pd_json=list()
 
-    f=open("/content/drive/MyDrive/KAIST_Double/test-all-20.txt",'r')
-    path=f.readlines()
+  with open('../Json/TEST_RGB.json', 'r') as rgb:
+    rgb_images = json.load(rgb)
 
-    for i in range(len(path)):
-      if i < 1455:
-        rgb_images.append("/content/drive/MyDrive/KAIST_Original/KAIST_dataset/"+path[i][:6]+path[i][:11]+"visible/"+path[i][11:17]+".jpg")
-        thermal_images.append("/content/drive/MyDrive/KAIST_Original/KAIST_dataset/"+path[i][:6]+path[i][:11]+"lwir/"+path[i][11:17]+".jpg")
-      else :
-        rgb_images.append("/content/drive/MyDrive/KAIST_Original/KAIST_dataset/"+path[i][:11]+"visible/"+path[i][11:17]+".jpg")
-        thermal_images.append("/content/drive/MyDrive/KAIST_Original/KAIST_dataset/"+path[i][:11]+"lwir/"+path[i][11:17]+".jpg")
+  with open('../Json/TEST_THERMAL.json', 'r') as th:
+    thermal_images = json.load(th)
 
-    for i in range(len(rgb_images)):
-      print(i)
-      rgb_image = Image.open(rgb_images[i], mode='r')
-      rgb_image = rgb_image.convert('RGB')
 
-      thermal_image = Image.open(thermal_images[i], mode='r')
-      thermal_image = thermal_image.convert('L')
+  for i in tqdm.tqdm(range(len(rgb_images))):
 
-      detect(pd_json, i, rgb_image, thermal_image, min_score=0.2, max_overlap=0.5, top_k=200)
-    
-    with open('/content/drive/MyDrive/KAIST_Double/Json/prediction_example.json','w',encoding="utf-8") as n:
-      json.dump(pd_json,n,ensure_ascii=False,indent="\t")
-    
+    rgb_image = Image.open(rgb_images[i], mode='r')
+    rgb_image = rgb_image.convert('RGB')
+
+    thermal_image = Image.open(thermal_images[i], mode='r')
+    thermal_image = thermal_image.convert('L')
+
+    detect(pd_json, i, rgb_image, thermal_image, min_score=0.2, max_overlap=0.5, top_k=200)
+  
+  with open('../Json/prediction.json','w',encoding="utf-8") as n:
+    json.dump(pd_json,n,ensure_ascii=False,indent="\t")
+  

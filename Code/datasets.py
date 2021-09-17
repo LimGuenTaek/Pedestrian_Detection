@@ -14,13 +14,13 @@ class KAISTDataset(Dataset):
       self.rgb=[]
       self.objects=[]
 
-      with open('/content/drive/MyDrive/KAIST_Double/Json/TRAIN_RGB.json', 'r') as r:
+      with open('../Json/TRAIN_RGB.json', 'r') as r:
         self.rgb = json.load(r)
 
-      with open('/content/drive/MyDrive/KAIST_Double/Json/TRAIN_THERMAL.json', 'r') as t:
+      with open('../Json/TRAIN_THERMAL.json', 'r') as t:
         self.thermal = json.load(t)
 
-      with open('/content/drive/MyDrive/KAIST_Double/Json/TRAIN_objects.json', 'r') as o:
+      with open('../Json/TRAIN_objects.json', 'r') as o:
         self.objects = json.load(o)
       
       assert len(self.rgb) == len(self.objects) == len(self.thermal)

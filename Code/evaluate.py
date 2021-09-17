@@ -5,7 +5,7 @@ from torchcv.evaluations.coco import COCO
 from torchcv.evaluations.eval_MR_multisetup import COCOeval
 
 annType = 'bbox'
-JSON_GT_FILE = os.path.join('/content/drive/MyDrive/KAIST_Double/Json/kaist_annotations_test20.json')
+JSON_GT_FILE = os.path.join('../Json/kaist_annotations_test20.json')
 cocoGt = COCO(JSON_GT_FILE)
 
 def evaluate_coco(test_json_path):
@@ -33,5 +33,5 @@ def evaluate_coco(test_json_path):
 
 if __name__ == '__main__':
 
-    test_json_path = '/content/drive/MyDrive/KAIST_Double/Json/prediction_example.json'
+    test_json_path = '../Json/prediction.json'
     evaluate_coco(test_json_path)
