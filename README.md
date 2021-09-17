@@ -110,7 +110,7 @@ class FusionLayer(nn.Module):
 
 ### Implementation
 
-1. Download the [dataset]() and Locate Dataset folder in your workspace
+1. Download the [dataset](https://drive.google.com/file/d/1_X01BYSfDMF3TG05MmAju4aSTOVpeYlh/view?usp=sharing) and Locate Dataset folder in your workspace
 
 2. Run ```python3 train.py``` to train Network
 
