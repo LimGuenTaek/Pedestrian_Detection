@@ -4,6 +4,8 @@
 
 **Dataset** : [KAIST Multispectral Pedestrian dataset](https://soonminhwang.github.io/rgbt-ped-detection/)
 
+**checkpoint** : https://drive.google.com/file/d/1ILpzWRM3dVXVVRm0FCI3AwL26Bed1qpC/view?usp=sharing (epoch-1)
+
 ---
 ### Accuracy
 
