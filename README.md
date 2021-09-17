@@ -9,15 +9,25 @@
 
 **Baseline** | missrate : 28.89 , Recall : 0.804
 
-**GFD-SSD** | missrate : 16.06 , Recall : 0.908 
+**GFD-SSD** | missrate : 16.06 , Recall : 0.908 (best-Validation-checkpoint)
 
+---
 
+### Acknowledgement
+
+* This implementation was written based on the code below.
+
+  * [SSD tutorial Code](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection)
+
+* The Gated Fusion Module of the following paper was implemented as GFD_v1.
+
+  * [GFD-SSD paper](https://arxiv.org/abs/1903.06999)
+
+* A part of the KAIST Multispectral dataset was used.
+
+---
 
 ### Model
-
-* [SSD tutorial Code](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection)을 기반으로 GFU-SSD model을 구현함
-
-* 핵심은 RGB , Thermal을 두개의 network로 따로따로 Convolution을 태워준뒤 Gate-Fusion이라는 방법으로 Feature들을 합쳐주는 것
 
 <img width="500" alt="스크린샷 2021-03-15 오후 2 13 44" src="https://user-images.githubusercontent.com/70448161/111106715-f7921000-8598-11eb-9959-c86601784753.png">
 
@@ -27,7 +37,8 @@
 
 ### Code
 
-* Fusion을 담당해주는 class이며 , 그 외 Code 수정 부분은 input data를 두장 처리해주는(RGB , Thermal) 과정이 대부분 입니다.
+* Fusion Layer was added from the existing [SSD tutorial code](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection).
+
 
 
 ```python
@@ -84,7 +95,7 @@ class FusionLayer(nn.Module):
 
     return feature_return
   
-  def forward(self,feature_rgb,feature_thermal): # feature들은 list로 넘겨줌
+  def forward(self,feature_rgb,feature_thermal): 
 
     conv4_3_feats=self.Gated_Fusion_Unit(feature_rgb[0],feature_thermal[0],self.conv4_3_3_rgb,self.conv4_3_3_thermal,self.conv4_3_1_fusion)
     conv7_feats=self.Gated_Fusion_Unit(feature_rgb[1],feature_thermal[1],self.conv7_3_rgb,self.conv7_3_thermal,self.conv7_1_fusion)
@@ -97,4 +108,19 @@ class FusionLayer(nn.Module):
 
 ```
 
-### Prediction
+### Implementation
+
+1. Download the [dataset]() and Locate Dataset folder in your workspace
+
+2. Run ```python3 train.py``` to train Network
+
+    * Hyperparameter, check it out yourself. 
+    * Checkpoint is saved on its own in the ```Code``` directory.
+    * If you want to resume from checkpoint, put in checkpoint path.
+
+3. After train , Run ```python3 predict.py``` to inference test dataset
+
+4. Finally, the evaluation can be conducted based on Prediction. Run ```python3 evaluate.py```
+
+
+
